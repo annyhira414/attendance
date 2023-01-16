@@ -36,7 +36,7 @@ const sidebar = () => {
                 </p>
               </div>
             </NavLink>
-            <NavLink to={"/DataWise"}>
+            <NavLink to={"/attendances"}>
               <div className="group flex w-[252px] h-14 hover:bg-[#E6F0FF]">
                 <HiViewGrid className="ml-[58px] mt-[15px] group-hover:text-[#0065FF] text-[#4E5256] w-6 h-6" />
                 <p className="mt-3.5 ml-2 font-semibold text-[#4E5256] mb-[35px] text-[18px] group-hover:text-[#0065FF]">

@@ -6,7 +6,7 @@ import {
   updateData,
   deleteData,
   patchData,
- 
+  getDateWiseAttendance,
 } from "./baseServices";
 // import { generatePDF } from "./reportGenerator";
 
@@ -18,6 +18,6 @@ export {
   updateData,
   deleteData,
   patchData,
+  getDateWiseAttendance,
   // generatePDF,
-
 };

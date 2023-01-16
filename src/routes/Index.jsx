@@ -15,6 +15,9 @@ import LoginForm from "../components/LoginForm";
 import LeaveDetails from "../pages/LeaveDetails";
 // import Attendance from "../pages/attendance/Attendance";
 import DataWise from "../pages/attendance/DateWise";
+import MonthWise from "../pages/attendance/MonthWise";
+
+import AntDesignTablePagination from "../pages/attendance/AntDesignTablePagination";
 
 const Index = () => {
   return (
@@ -34,7 +37,9 @@ const Index = () => {
         <Route path="/loginform" element={<LoginForm />} />
         <Route path="/leaveDetails/:id" element={<LeaveDetails />} />
         {/* <Route path="/attendance" element={<Attendance />} /> */}
-        <Route path="/DataWise" element={<DataWise />} />
+        <Route path="/attendances" element={<DataWise />} />
+        <Route path="/antDesignTablePagination" element={<AntDesignTablePagination />} />
+        <Route path="/monthWise" element={<MonthWise />} />
       </Routes>
     </div>
   );

@@ -51,7 +51,7 @@ export const getDetails = async (url, id) => {
     console.log(err);
     return {
       success: false,
-      data: {},
+      // data: {},
       status: err?.response?.status,
       message: err?.response?.data?.message,
     };
@@ -132,6 +132,28 @@ export const patchData = async (url, data, id) => {
     return {
       success: false,
       data: {},
+      status: err?.response?.status,
+      message: err?.response?.data?.message,
+    };
+  }
+};
+
+// new
+
+export const getDateWiseAttendance = async (url, params) => {
+  try {
+    const { authToken } = getAllCookies();
+    const response = await axios.get(`${ADMIN_API_BASE_URL}/${url}`, {
+      params,
+      headers: {
+        Authorization: authToken,
+      },
+    });
+    return response;
+  } catch (err) {
+    return {
+      success: false,
+      data: [],
       status: err?.response?.status,
       message: err?.response?.data?.message,
     };
