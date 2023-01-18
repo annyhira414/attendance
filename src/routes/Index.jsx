@@ -16,7 +16,7 @@ import LeaveDetails from "../pages/LeaveDetails";
 // import Attendance from "../pages/attendance/Attendance";
 import DataWise from "../pages/attendance/DateWise";
 import MonthWise from "../pages/attendance/MonthWise";
-
+import PopUp from "../pages/attendance/popUp/PopUp";
 import AntDesignTablePagination from "../pages/attendance/AntDesignTablePagination";
 
 const Index = () => {
@@ -39,7 +39,8 @@ const Index = () => {
         {/* <Route path="/attendance" element={<Attendance />} /> */}
         <Route path="/attendances" element={<DataWise />} />
         <Route path="/antDesignTablePagination" element={<AntDesignTablePagination />} />
-        <Route path="/monthWise" element={<MonthWise />} />
+        <Route path="/month_wise_list" element={<MonthWise />} />
+        <Route path="/popUp" element={<PopUp />} />
       </Routes>
     </div>
   );

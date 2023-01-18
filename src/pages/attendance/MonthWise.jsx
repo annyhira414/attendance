@@ -1,148 +1,130 @@
 import React from "react";
 import EmpList from "../EmpList";
-import { DatePicker, Space } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import { AiOutlineReload } from "react-icons/ai";
 
-const Attendance = () => {
+import { Space, Table, DatePicker, Button, Modal } from "antd";
+import { useState } from "react";
+import { getData } from "../../lib/services";
+import { EyeOutlined } from "@ant-design/icons";
+import PopUp from "./popUp/PopUp";
+
+const MonthWise = () => {
   const { RangePicker } = DatePicker;
-  dayjs.extend(customParseFormat);
-  const dateFormat = "YYYY-MM-DD";
+  const [employeeAttendance, setEmployeeAttendance] = useState([]);
+  const [date, setDate] = useState();
+  const [params, setParams] = useState();
+  const [infoDetails, setInfoDetails] = useState(false);
+  const [report, setReport] = useState();
 
+  const columns = [
+    {
+      title: "NAME",
+      dataIndex: "name",
+    },
+    {
+      title: "AVG IN TIME",
+      dataIndex: "avg_in_time",
+    },
+    {
+      title: "AVG OUT TIME",
+      dataIndex: "avg_out_time",
+    },
+    {
+      title: "AVG DURATION",
+      dataIndex: "avg_duration",
+    },
+    {
+      title: "ACTION",
+      render: (record) => {
+        return (
+          <>
+            <EyeOutlined
+              onClick={() => {
+                onEditStudent(record);
+              }}
+            />
+          </>
+        );
+      },
+    },
+  ];
+
+  const fetchRecords = async () => {
+    const res = await getData(`attendances/month_wise_list`, params);
+    console.log("my response is = ", res?.data);
+
+    setEmployeeAttendance(res?.data);
+  };
+
+  console.log("employeeAttendance", employeeAttendance);
+  console.log("date :", date);
+
+  const onOpenChange = (open) => {
+    const input1 = open[0].format("YYYY-MM-DD");
+    const input2 = open[1].format("YYYY-MM-DD");
+    setParams({ start_date: input1, end_date: input2 });
+
+    console.log("input1", input1);
+    console.log("input2", input2);
+  };
+
+  const onEditStudent = (record) => {
+    setInfoDetails(true);
+    setReport(record);
+  };
+  console.log("id: ", report?.id);
   return (
     <>
       <EmpList>
-        <div className="ml-[280Px] pt-[122px]">
+        <div className="ml-[280Px] pt-[122px] m-8 ">
           <div className="flex float-right">
             <div>
               <Space direction="vertical" size={12}>
                 <RangePicker
-                  className="h-11"
-                  defaultValue={[dayjs("2019-09-03", dateFormat), dayjs("2019-11-22", dateFormat)]}
-                  disabled={[false]}
+                  defaultValue={date}
+                  format={["YYYY/MM/DD", "YYYY/MM/DD"]}
+                  onCalendarChange={(val) => setDate(val)}
+                  onChange={(val) => onOpenChange(val)}
                 />
               </Space>
             </div>
-            <div className="mt-1 ml-3">
-              <button className=" font-semibold  bg-blue-900 text-white h-10 w-[50px] rounded-sm">
-                <AiOutlineReload className="w-[50px]" />
-              </button>
-            </div>
             <div className="mt-1 ml-2">
-              <button
-                // onClick={(e) => handleFormSubmit(e)}
+              <Button
+                onClick={() => fetchRecords()}
                 className="font-semibold tracking-[1.25px] bg-blue-900 text-white rounded w-[150px] h-10"
               >
                 SEARCH
-              </button>
+              </Button>
             </div>
           </div>
-        </div>
-        <div className="ml-[280Px] pt-[122px]">
-          <div className="flex flex-col -my-10">
-            <div>
-              <h1 className="font-bold tracking-[1.25px] text-blue-900 text-xl my-6">DATA WISH AVERAGE ATTENDANCE</h1>
-            </div>
-            <div>
-              <div class="flex flex-col">
-                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                    <div class="overflow-hidden">
-                      <table class="min-w-full border text-center">
-                        <thead class="border-b">
-                          <tr>
-                            <th scope="col" class="text-lg font-medium text-white px-6 py-4 border-r bg-blue-900">
-                              NAME
-                            </th>
-                            <th scope="col" class="text-lg font-medium text-white px-6 py-4 border-r bg-blue-900">
-                              AVG IN TIME
-                            </th>
-                            <th scope="col" class="text-lg font-medium text-white px-6 py-4 border-r bg-blue-900">
-                              AVG OUT TIME
-                            </th>
-                            <th scope="col" class="text-lg font-medium text-white px-6 py-4 bg-blue-900">
-                              AVG DURATION
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr class="border-b">
-                            <td class="px-6 py-4 text-ml font-medium text-black border-r">Debashish</td>
-                            <td class="text-sm text-red-600 font-medium px-6 py-4  border-r">10:34:48</td>
-                            <td class="text-sm text-black font-medium px-6 py-4 border-r">20:39:57</td>
-                            <td class="text-sm text-black font-medium px-6 py-4 ">10:05:09</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* 2nd table  */}
-
-        <div className="ml-[280Px] pt-[122px]">
-          <div className="flex flex-col -my-10">
-            <div>
-              <h1 className="font-bold tracking-[1.25px] text-blue-900 text-xl my-6">DATA WISH ATTENDANCE DETAILS</h1>
-            </div>
-            <div>
-              <div class="flex flex-col">
-                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                    <div class="overflow-hidden">
-                      <table class="min-w-full border text-center">
-                        <thead class="border-b">
-                          <tr>
-                            <th scope="col" class="text-lg font-medium text-white px-6 py-4 border-r bg-blue-900">
-                              DATE
-                            </th>
-                            <th scope="col" class="text-lg font-medium text-white px-6 py-4 border-r bg-blue-900">
-                              IN TIME
-                            </th>
-                            <th scope="col" class="text-lg font-medium text-white px-6 py-4 border-r bg-blue-900">
-                              OUT TIME
-                            </th>
-                            <th scope="col" class="text-lg font-medium text-white px-6 py-4 bg-blue-900">
-                              DURATION
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr class="border-b">
-                            <td class="px-6 py-4 text-ml font-medium text-black border-r">16-10-2022</td>
-                            <td class="text-sm text-red-600 font-medium px-6 py-4  border-r">10:34:48</td>
-                            <td class="text-sm text-black font-medium px-6 py-4 border-r">20:39:57</td>
-                            <td class="text-sm text-black font-medium px-6 py-4 ">10:05:09</td>
-                          </tr>
-                          <tr class="border-b">
-                            <td class="px-6 py-4 text-ml font-medium text-black border-r">13-10-2022</td>
-                            <td class="text-sm text-red-600 font-medium px-6 py-4  border-r">10:34:48</td>
-                            <td class="text-sm text-black font-medium px-6 py-4 border-r">20:39:57</td>
-                            <td class="text-sm text-black font-medium px-6 py-4 ">10:05:09</td>
-                          </tr>
-                          <tr class="border-b">
-                            <td class="px-6 py-4 text-ml font-medium text-black border-r">12-10-2022</td>
-                            <td class="text-sm text-red-600 font-medium px-6 py-4  border-r">10:34:48</td>
-                            <td class="text-sm text-black font-medium px-6 py-4 border-r">20:39:57</td>
-                            <td class="text-sm text-black font-medium px-6 py-4 ">10:05:09</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div>
+            <h1 className="font-bold tracking-[1.25px] text-blue-900 text-xl m-8 my-4">
+              MONTH WISE AVERAGE ATTENDANCE
+            </h1>
           </div>
+          <Table
+            className=" m-8 my-4 ant-table-thead ant-table-cell "
+            dataSource={employeeAttendance}
+            columns={columns}
+            rowKey="id"
+          ></Table>
+          <Modal
+            title={report?.name}
+            okType="danger"
+            open={infoDetails}
+            onCancel={() => {
+              setInfoDetails(false);
+            }}
+            onOk={() => {
+              setInfoDetails(false);
+            }}
+          >
+            <PopUp id={report?.id} />
+          </Modal>
         </div>
       </EmpList>
     </>
   );
 };
 
-export default Attendance;
+export default MonthWise;

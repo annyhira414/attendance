@@ -22,6 +22,8 @@ export const getData = async (url, params) => {
   }
 };
 
+ 
+
 export const getPaginatedData = async (url, params) => {
   try {
     const { authToken } = getAllCookies();
@@ -52,11 +54,15 @@ export const getDetails = async (url, id) => {
     return {
       success: false,
       // data: {},
+
+    
       status: err?.response?.status,
       message: err?.response?.data?.message,
     };
   }
 };
+
+
 
 export const postData = async (url, data, lang) => {
   try {
